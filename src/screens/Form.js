@@ -86,16 +86,20 @@ const Form = () => {
           !inputs[property]
         ) {
           handleError(`Please Enter ${property}`, `${property}`);
-          break;
-        } else if (!reg.test(inputs.Email)) {
-          handleError('Please Enter Valid Email', 'Email');
-        } else if (!mobExp.test(inputs.Mobile)) {
-          handleError('Please Enter Valid Mobile Number', 'Mobile');
-        } else if (!ValidateBirthday(inputs.DOB)) {
-          handleError('Please Enter Valid Date / Format DD-MM-YYYY', 'DOB');
-        } else if (!pin.test(inputs.Zip)) {
-          handleError('Please Enter Valid Pincode', 'Zip');
         }
+      }
+
+      if (inputs.Email.length > 0 && !reg.test(inputs.Email)) {
+        handleError('Please Enter Valid Email', 'Email');
+      }
+      if (inputs.Mobile.length > 0 && !mobExp.test(inputs.Mobile)) {
+        handleError('Please Enter Valid Mobile Number', 'Mobile');
+      }
+      if (inputs.DOB.length > 0 && !ValidateBirthday(inputs.DOB)) {
+        handleError('Please Enter Valid Date / Format DD-MM-YYYY', 'DOB');
+      }
+      if (inputs.Zip.length > 0 && !pin.test(inputs.Zip)) {
+        handleError('Please Enter Valid Pincode', 'Zip');
       }
     } catch (e) {
       console.log(e);
