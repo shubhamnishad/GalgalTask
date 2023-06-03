@@ -36,7 +36,9 @@ const CustomInput = ({
           },
         ]}>
         <TextInput
+          style={{color: '#333', height: 45}}
           placeholder={placeholder}
+          placeholderTextColor={'#333'}
           onChangeText={onChangeText}
           keyboardType={type}
           editable={editable}
