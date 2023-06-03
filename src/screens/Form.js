@@ -66,23 +66,18 @@ const Form = () => {
   }, [inputs.DOB]);
 
   useEffect(() => {
-    let validate =
-      Object.keys(errors).length > 0 &&
-      Object.values(errors).every(value => value === null);
-    setValid(validate);
+    if (Object.keys(errors).length > 0) {
+      let v = Object.values(errors).every(value => value === null);
+      setValid(v);
+    }
   }, [errors]);
 
   const handleValidation = () => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
     let mobExp = /^(0|91)?[6-9][0-9]{9}$/;
+    let pin = /^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/;
 
     try {
-      if (!reg.test(inputs.Email)) {
-        handleError('Please Enter Valid Email', 'Email');
-      }
-      if (!mobExp.test(inputs.Mobile)) {
-        handleError('Please Enter Valid Mobile Number', 'Mobile');
-      }
       for (const property in inputs) {
         if (
           property !== 'Gender' &&
@@ -91,10 +86,16 @@ const Form = () => {
           !inputs[property]
         ) {
           handleError(`Please Enter ${property}`, `${property}`);
+          break;
+        } else if (!reg.test(inputs.Email)) {
+          handleError('Please Enter Valid Email', 'Email');
+        } else if (!mobExp.test(inputs.Mobile)) {
+          handleError('Please Enter Valid Mobile Number', 'Mobile');
+        } else if (!ValidateBirthday(inputs.DOB)) {
+          handleError('Please Enter Valid Date / Format DD-MM-YYYY', 'DOB');
+        } else if (!pin.test(inputs.Zip)) {
+          handleError('Please Enter Valid Pincode', 'Zip');
         }
-      }
-      if (!ValidateBirthday(inputs.DOB)) {
-        handleError('Please Enter Valid Date Of Birth', 'DOB');
       }
     } catch (e) {
       console.log(e);
@@ -162,6 +163,7 @@ const Form = () => {
       setInput(initialState);
       setCount(prevState => ({...prevState, submit: 0}));
       setCount(prevState => ({...prevState, show: 0}));
+      setValid(false);
     } catch (e) {
       Alert.alert('Error', 'Something went wrong');
     }
@@ -188,6 +190,7 @@ const Form = () => {
         />
         <CustomInput
           label="Email"
+          type="email-address"
           onChangeText={text => handleOnChange(text, 'Email')}
           error={errors.Email}
           onFocus={() => {
